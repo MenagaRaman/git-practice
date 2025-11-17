@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .container {
+            display: flex;
+            width: 100%;
+            gap: 20px;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .products, .cart {
+            width: 50%;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        .product {
+            padding: 10px;
+            margin: 10px 0;
+            background: #f4f4f4;
+            cursor: pointer;
+            border-radius: 6px;
+        }
+        .product:hover {
+            background: #e2e2e2;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        td, th {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- LEFT SIDE — PRODUCTS -->
+    <div class="products">
+        <h2>Products</h2>
+
+        <div class="product" onclick="addToCart('Pen', 10)">Pen — ₹10</div>
+        <div class="product" onclick="addToCart('Pencil', 5)">Pencil — ₹5</div>
+        <div class="product" onclick="addToCart('Eraser', 3)">Eraser — ₹3</div>
+        <div class="product" onclick="addToCart('Sharpener', 7)">Sharpener — ₹7</div>
+        <div class="product" onclick="addToCart('Notebook', 25)">Notebook — ₹25</div>
+    </div>
+
+    <!-- RIGHT SIDE — CART -->
+    <div class="cart">
+        <h2>Cart</h2>
+
+        <table id="cartTable">
+            <tr>
+                <th>Item</th>
+                <th>Qty</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+        </table>
+
+        <h3>Total Amount: ₹ <span id="totalAmount">0</span></h3>
+    </div>
+
+</div>
+
+<script>
+    let cart = {};  
+    let grandTotal = 0;
+
+    function addToCart(name, price) {
+
+        // If item already exists, increase quantity
+        if (cart[name]) {
+            cart[name].quantity++;
+            cart[name].total = cart[name].quantity * price;
+        } else {
+            cart[name] = {
+                price: price,
+                quantity: 1,
+                total: price
+            };
+        }
+
+        updateCartUI();
+    }
+
+    function updateCartUI() {
+        const table = document.getElementById("cartTable");
+
+        // Clear existing rows except header
+        table.innerHTML = `
+            <tr>
+                <th>Item</th>
+                <th>Qty</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+        `;
+
+        grandTotal = 0;
+
+        for (let item in cart) {
+            let row = table.insertRow(-1);
+
+            row.innerHTML = `
+                <td>${item}</td>
+                <td>${cart[item].quantity}</td>
+                <td>₹${cart[item].price}</td>
+                <td>₹${cart[item].total}</td>
+            `;
+
+            grandTotal += cart[item].total;
+        }
+
+        document.getElementById("totalAmount").textContent = grandTotal;
+    }
+</script>
+
+</body>
+</html>
