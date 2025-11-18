@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Table Sort</title>
+    <style>
+        body {
+            font-family: Arial;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 40px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 50%;
+            text-align: center;
+        }
+
+        th, td {
+            border: 1px solid #999;
+            padding: 10px;
+        }
+
+        button {
+            margin: 5px;
+            padding: 8px 15px;
+            cursor: pointer;
+        }
+
+        .btn-row {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Employee Table</h2>
+
+    <!-- SORT BUTTONS -->
+    <div class="btn-row">
+        <button onclick="sortTable('name', true)">Sort Name ↑</button>
+        <button onclick="sortTable('name', false)">Sort Name ↓</button>
+
+        <button onclick="sortTable('age', true)">Sort Age ↑</button>
+        <button onclick="sortTable('age', false)">Sort Age ↓</button>
+
+        <button onclick="sortTable('salary', true)">Sort Salary ↑</button>
+        <button onclick="sortTable('salary', false)">Sort Salary ↓</button>
+    </div>
+
+    <!-- TABLE -->
+    <table id="employeeTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Salary</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        // -------- JSON Data --------
+        const employees = [
+            { "name": "Ravi", "age": 28, "salary": 25000 },
+            { "name": "Priya", "age": 24, "salary": 22000 },
+            { "name": "Karan", "age": 30, "salary": 30000 },
+            { "name": "Anu", "age": 26, "salary": 27000 }
+        ];
+
+        // -------- Display Table --------
+        function loadTable(data) {
+            const tbody = document.querySelector("#employeeTable tbody");
+            tbody.innerHTML = "";
+
+            data.forEach(emp => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${emp.name}</td>
+                        <td>${emp.age}</td>
+                        <td>${emp.salary}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        // -------- Sorting Function --------
+        function sortTable(column, ascending) {
+            employees.sort((a, b) => {
+                if (a[column] < b[column]) return ascending ? -1 : 1;
+                if (a[column] > b[column]) return ascending ? 1 : -1;
+                return 0;
+            });
+
+            loadTable(employees);
+        }
+
+        // Load initial table
+        loadTable(employees);
+    </script>
+
+</body>
+</html>
